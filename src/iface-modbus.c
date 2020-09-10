@@ -238,6 +238,10 @@ int iface_modbus_read_data(int reg_addr, int bit_offset, knot_value_type *out)
 		l_error("Failed to read from Modbus: %s (%d)",
 			modbus_strerror(errno), rc);
 	} else {
+		char *hexstring = l_util_hexstring((uint8_t *) &tmp, sizeof(tmp));
+		l_error("Reading %d bits from address %x: %s", bit_offset,
+			reg_addr, hexstring);
+		l_free(hexstring);
 		memcpy(out, &tmp, sizeof(tmp));
 	}
 
